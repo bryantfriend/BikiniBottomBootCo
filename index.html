@@ -16,6 +16,7 @@
             color: white;
             padding: 0.5rem 0;
             text-align: center;
+            position: relative;
         }
         .nav-ribbon a {
             color: white;
@@ -23,6 +24,20 @@
             margin: 0 1rem;
         }
         .nav-ribbon a:hover {
+            text-decoration: underline;
+        }
+        .cart-button {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .cart-button:hover {
             text-decoration: underline;
         }
         header {
@@ -68,6 +83,7 @@
     <div class="nav-ribbon">
         <a href="index.html">Home</a>
         <a href="contact.html">Contact</a>
+        <button class="cart-button" onclick="viewCart()">🛒</button>
     </div>
     <header>
         <h1>Bikini Bottom Boot Company</h1>
@@ -81,22 +97,32 @@
                 <h3>Boot Model 1</h3>
                 <p>Description of Boot Model 1. Customize it to your liking!</p>
                 <p>Price: $XX.XX</p>
-                <a href="#" class="buy-button" onclick="buyBoot('Boot Model 1')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="addToCart('Boot Model 1')">Buy Now</a>
             </div>
             <div class="store-item">
                 <h3>Boot Model 2</h3>
                 <p>Description of Boot Model 2. Perfect for any adventure!</p>
                 <p>Price: $XX.XX</p>
-                <a href="#" class="buy-button" onclick="buyBoot('Boot Model 2')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="addToCart('Boot Model 2')">Buy Now</a>
             </div>
             <!-- Add more store items as needed -->
         </div>
     </div>
 
     <script>
-        function buyBoot(model) {
-            alert('You have selected to buy: ' + model);
-            // Here you would integrate with a payment gateway to process the purchase
+        let cart = [];
+
+        function addToCart(model) {
+            cart.push(model);
+            alert('Added to cart: ' + model);
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+            } else {
+                alert('Items in your cart:\n' + cart.join('\n'));
+            }
         }
     </script>
 </body>
