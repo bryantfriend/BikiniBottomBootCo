@@ -51,6 +51,17 @@
         .store-item h2 {
             margin-top: 0;
         }
+        .buy-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .buy-button:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 <body>
@@ -70,14 +81,23 @@
                 <h3>Boot Model 1</h3>
                 <p>Description of Boot Model 1. Customize it to your liking!</p>
                 <p>Price: $XX.XX</p>
+                <a href="#" class="buy-button" onclick="buyBoot('Boot Model 1')">Buy Now</a>
             </div>
             <div class="store-item">
                 <h3>Boot Model 2</h3>
                 <p>Description of Boot Model 2. Perfect for any adventure!</p>
                 <p>Price: $XX.XX</p>
+                <a href="#" class="buy-button" onclick="buyBoot('Boot Model 2')">Buy Now</a>
             </div>
             <!-- Add more store items as needed -->
         </div>
     </div>
+
+    <script>
+        function buyBoot(model) {
+            alert('You have selected to buy: ' + model);
+            // Here you would integrate with a payment gateway to process the purchase
+        }
+    </script>
 </body>
 </html>
