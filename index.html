@@ -23,34 +23,24 @@
             <div class="store-item">
                 <h3>Boot Model 1</h3>
                 <p>Description of Boot Model 1. Customize it to your liking!</p>
-                <p>Price: $XX.XX</p>
+                <p>Price: $50.00</p>
                 <a href="#" class="buy-button" onclick="addToCart('Boot Model 1')">Buy Now</a>
             </div>
             <div class="store-item">
                 <h3>Boot Model 2</h3>
                 <p>Description of Boot Model 2. Perfect for any adventure!</p>
-                <p>Price: $XX.XX</p>
+                <p>Price: $50.00</p>
                 <a href="#" class="buy-button" onclick="addToCart('Boot Model 2')">Buy Now</a>
             </div>
-            <!-- Add more store items as needed -->
+        </div>
+        <!-- Additional Buttons for JavaScript Functions -->
+        <div style="text-align: center; margin: 1rem;">
+            <button onclick="calculateTotal()">Calculate Total</button>
+            <button onclick="clearCart()">Clear Cart</button>
         </div>
     </div>
 
-    <script>
-        let cart = [];
-
-        function addToCart(model) {
-            cart.push(model);
-            alert('Added to cart: ' + model);
-        }
-
-        function viewCart() {
-            if (cart.length === 0) {
-                alert('Your cart is empty.');
-            } else {
-                alert('Items in your cart:\n' + cart.join('\n'));
-            }
-        }
-    </script>
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
