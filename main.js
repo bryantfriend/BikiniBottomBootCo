@@ -62,7 +62,7 @@ function generateQR() {
         height: 256
     });
 
-    alert(`QR Code generated for ${kgsAmount} KGS.`);
+    alert(`QR Code v1.02 generated for ${kgsAmount} KGS.`);
 }
 
 // Calculate CRC16-CCITT (XModem)
