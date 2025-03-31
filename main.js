@@ -58,6 +58,7 @@ function generateQR() {
     const payload = fixedPrefix + amountTag + fixedSuffix;
     const crc = calculateCRC(payload);
     const finalPayload = payload + crc;
+    console.log(finalPayload);
 
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), {
@@ -66,7 +67,7 @@ function generateQR() {
         height: 256
     });
 
-    alert(`QR Code V1.03 generated for ${amountKGS} KGS.`);
+    alert(`QR Code V1.04 generated for ${amountKGS} KGS.`);
 }
 
 // Calculate CRC16-CCITT (XModem)
