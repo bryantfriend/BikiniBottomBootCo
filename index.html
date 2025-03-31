@@ -38,6 +38,15 @@
             <button onclick="calculateTotal()">Calculate Total</button>
             <button onclick="clearCart()">Clear Cart</button>
         </div>
+
+        <div style="text-align: center; margin: 1rem;">
+    <button onclick="generateQR()">Generate Payment QR</button>
+    <div id="qrcode" style="margin-top: 1rem;"></div>
+</div>
+
+<!-- Load QR Code generator library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     </div>
 
     <!-- Link to external JavaScript file -->
