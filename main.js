@@ -40,29 +40,33 @@ function generateQR() {
 
     const usdTotal = cart.length * 50;
     const exchangeRate = 89;
-    const kgsAmount = (usdTotal * exchangeRate).toFixed(2); // e.g. "2670.00"
+    const amountKGS = (usdTotal * exchangeRate).toFixed(2); // e.g. "2670.00"
 
-    // Your known-good working QR structure (replace amount at Tag 54)
-    const beforeAmount =
-        "00020101021132590015qr.demirbank.kg0104700110161180000284115533120211130212520448";
+    const fixedPrefix =
+        "000201010211" +
+        "32590015qr.demirbank.kg" +
+        "0104700110161180000284115533" +
+        "120211130212520448295303417";
 
-    const afterAmount =
-        "2953034175909DEMIRBANK6304"; // ends before CRC
+    const amountTag = "5408" + amountKGS.padStart(8, '0'); // force 8-digit decimal, e.g., "0002670.00"
 
-    const amountTag = "54" + kgsAmount.length.toString().padStart(2, '0') + kgsAmount;
+    const fixedSuffix =
+        "5802KG" +
+        "5909DEMIRBANK" +
+        "6304"; // CRC will be calculated
 
-    const payload = beforeAmount + amountTag + afterAmount;
+    const payload = fixedPrefix + amountTag + fixedSuffix;
     const crc = calculateCRC(payload);
-    const fullQR = payload + crc;
+    const finalPayload = payload + crc;
 
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), {
-        text: fullQR,
+        text: finalPayload,
         width: 256,
         height: 256
     });
 
-    alert(`QR Code v1.02 generated for ${kgsAmount} KGS.`);
+    alert(`QR Code V1.03 generated for ${amountKGS} KGS.`);
 }
 
 // Calculate CRC16-CCITT (XModem)
