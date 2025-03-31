@@ -82,3 +82,8 @@ header {
 .buy-button:hover {
     background-color: #555;
 }
+
+#qrcode {
+    margin: 0 auto;
+    width: fit-content;
+}
