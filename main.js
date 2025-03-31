@@ -22,7 +22,7 @@ function viewCart() {
 }
 
 function calculateTotal() {
-    let total = cart.length * 50; // $50 per boot
+    let total = cart.length * 50;
     alert("Total price: $" + total);
 }
 
@@ -39,28 +39,37 @@ function generateQR() {
     }
 
     const usdTotal = cart.length * 50;
-    const exchangeRate = 89; // Adjust as needed
-    const kgsAmount = (usdTotal * exchangeRate).toFixed(2); // e.g. "4450.00"
+    const exchangeRate = 89;
+    const kgsAmount = (usdTotal * exchangeRate).toFixed(2); // Example: "2670.00"
 
-    // Start with base EMV string up to amount
-    const baseQR =
-        "000201" + // Payload format
+    const name = "BRAYANT RONALD FREND";
+    const gui = "qr.demirbank.kg";
+    const account = "1180000284115533";
+
+    // Merchant Account Info (Tag 32) details
+    const merchantAccountInfo =
+        "0015" + gui + // GUI
+        "0104" + name.length.toString().padStart(2, '0') + name +
+        "0116" + account;
+
+    const tag32 = "32" + merchantAccountInfo.length.toString().padStart(2, '0') + merchantAccountInfo;
+
+    // Build full QR payload without CRC
+    let payload =
+        "000201" + // Payload Format Indicator
         "010211" + // Static QR
-        "3259" + // Tag 32 starts here
-            "0015qr.demirbank.kg" +
-            "0104" + "06" + "BRAYAN" + // TEMP short name to fix mismatch (adjust as needed)
-            "0116" + "1180000284115533" +
-        "52044812" + // Merchant category
-        "5303417" +  // KGS
-        "54" + kgsAmount.length.toString().padStart(2, '0') + kgsAmount + // Tag 54: amount
-        "5802KG" +
-        "5909DEMIRBANK" +
+        tag32 +
+        "52044812" + // Merchant Category Code
+        "5303417" +  // Currency = KGS
+        "54" + kgsAmount.length.toString().padStart(2, '0') + kgsAmount + // Amount
+        "5802KG" + // Country
+        "5909DEMIRBANK" + // Merchant name
         "6304"; // CRC placeholder
 
-    const crc = calculateCRC(baseQR);
-    const fullQR = baseQR + crc;
+    const crc = calculateCRC(payload);
+    const fullQR = payload + crc;
 
-    // Generate QR code
+    // Generate the QR code
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), {
         text: fullQR,
@@ -71,7 +80,7 @@ function generateQR() {
     alert(`QR Code generated for ${kgsAmount} KGS.`);
 }
 
-// EMV CRC-16/CCITT-FALSE (XModem)
+// CRC-16/CCITT-FALSE (XModem)
 function calculateCRC(str) {
     let crc = 0xFFFF;
     for (let i = 0; i < str.length; i++) {
