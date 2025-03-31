@@ -40,36 +40,21 @@ function generateQR() {
 
     const usdTotal = cart.length * 50;
     const exchangeRate = 89;
-    const kgsAmount = (usdTotal * exchangeRate).toFixed(2); // Example: "2670.00"
+    const kgsAmount = (usdTotal * exchangeRate).toFixed(2); // e.g. "2670.00"
 
-    const name = "BRAYANT RONALD FREND";
-    const gui = "qr.demirbank.kg";
-    const account = "1180000284115533";
+    // Your known-good working QR structure (replace amount at Tag 54)
+    const beforeAmount =
+        "00020101021132590015qr.demirbank.kg0104700110161180000284115533120211130212520448";
 
-    // Merchant Account Info (Tag 32) details
-    const merchantAccountInfo =
-        "0015" + gui + // GUI
-        "0104" + name.length.toString().padStart(2, '0') + name +
-        "0116" + account;
+    const afterAmount =
+        "2953034175909DEMIRBANK6304"; // ends before CRC
 
-    const tag32 = "32" + merchantAccountInfo.length.toString().padStart(2, '0') + merchantAccountInfo;
+    const amountTag = "54" + kgsAmount.length.toString().padStart(2, '0') + kgsAmount;
 
-    // Build full QR payload without CRC
-    let payload =
-        "000201" + // Payload Format Indicator
-        "010211" + // Static QR
-        tag32 +
-        "52044812" + // Merchant Category Code
-        "5303417" +  // Currency = KGS
-        "54" + kgsAmount.length.toString().padStart(2, '0') + kgsAmount + // Amount
-        "5802KG" + // Country
-        "5909DEMIRBANK" + // Merchant name
-        "6304"; // CRC placeholder
-
+    const payload = beforeAmount + amountTag + afterAmount;
     const crc = calculateCRC(payload);
     const fullQR = payload + crc;
 
-    // Generate the QR code
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), {
         text: fullQR,
@@ -80,7 +65,7 @@ function generateQR() {
     alert(`QR Code generated for ${kgsAmount} KGS.`);
 }
 
-// CRC-16/CCITT-FALSE (XModem)
+// Calculate CRC16-CCITT (XModem)
 function calculateCRC(str) {
     let crc = 0xFFFF;
     for (let i = 0; i < str.length; i++) {
