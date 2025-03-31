@@ -11,35 +11,32 @@ function addToCart(model) {
 
 function generateQR() {
     if (cart.length === 0) {
-        alert("Your cart is empty. Add items before generating payment.");
+        alert("Your cart is empty.");
         return;
     }
 
-    let amountUSD = cart.length * 50;
-    let exchangeRate = 89; // Estimate: 1 USD ≈ 89 KGS
-    let amountKGS = (amountUSD * exchangeRate).toFixed(2);
+    // Calculate total
+    const usdTotal = cart.length * 50;
+    const exchangeRate = 89; // 1 USD ≈ 89 KGS
+    const kgsTotal = (usdTotal * exchangeRate).toFixed(2);
 
-    // Your verified DemirBank QR string (up to the amount section)
-    let baseURL = "https://retail.demirbank.kg/#00020101021132590015qr.demirbank.kg01047001101611800002841155331202111302125204482953034175909DEMIRBANK6304";
+    // Your original working QR string from DemirBank (with hardcoded amount)
+    const baseQR = "00020101021132590015qr.demirbank.kg01047001101611800002841155331202111302125204482953034175909DEMIRBANK54081234.565802KG6304XXXX";
 
-    // You can regenerate the CRC (last part), but for now we'll just encode a simplified dynamic version.
-    let dynamicQRString = `00020101021132590015qr.demirbank.kg0104700110161180000284115533120211130212520448` +
-                          `2953034175909DEMIRBANK5408${amountKGS}5802KG6304`;
+    // Replace the amount (tag 54, 8 digits)
+    const updatedQR = baseQR.replace(/5408\d{1,8}\.\d{2}/, `5408${kgsTotal}`);
 
-    // For security: hash the string for a valid CRC (optional). For demo: leave as-is.
-
-    // Clear previous QR
-    document.getElementById("qrcode").innerHTML = "";
-
-    // Generate QR
+    // Generate the QR code
+    document.getElementById("qrcode").innerHTML = ""; // Clear previous
     new QRCode(document.getElementById("qrcode"), {
-        text: dynamicQRString,
+        text: updatedQR,
         width: 220,
         height: 220
     });
 
-    alert(`QR Code generated for payment of ${amountKGS} KGS.`);
+    alert(`QR Code generated for payment of ${kgsTotal} KGS.`);
 }
+
 
 
 
