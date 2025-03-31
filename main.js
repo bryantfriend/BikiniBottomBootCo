@@ -39,56 +39,39 @@ function generateQR() {
     }
 
     const usdTotal = cart.length * 50;
-    const exchangeRate = 89;
-    const amountKGS = (usdTotal * exchangeRate).toFixed(2); // Must be x.xx
+    const exchangeRate = 89; // Adjust as needed
+    const kgsAmount = (usdTotal * exchangeRate).toFixed(2); // e.g. "4450.00"
 
-    const payloadFormat = "000201";
-    const pointOfInitiation = "010211";
-
-    const gui = "0015qr.demirbank.kg";
-    const accountName = "BRAYANT RONALD FREND";
-    const nameLength = accountName.length.toString().padStart(2, '0');
-    const accountNumber = "1180000284115533";
-
-    const merchantAccountInfo = "32" +
-        (59 + nameLength).toString().padStart(2, '0') +
-        gui +
-        "0104" + nameLength + accountName +
-        "0116" + accountNumber;
-
-    const merchantCategory = "52044812";
-    const currency = "5303417";
-    const amountTag = "54" + amountKGS.length.toString().padStart(2, '0') + amountKGS;
-    const countryCode = "5802KG";
-    const merchantName = "5909DEMIRBANK";
-
-    let dataWithoutCRC =
-        payloadFormat +
-        pointOfInitiation +
-        merchantAccountInfo +
-        merchantCategory +
-        currency +
-        amountTag +
-        countryCode +
-        merchantName +
+    // Start with base EMV string up to amount
+    const baseQR =
+        "000201" + // Payload format
+        "010211" + // Static QR
+        "3259" + // Tag 32 starts here
+            "0015qr.demirbank.kg" +
+            "0104" + "06" + "BRAYAN" + // TEMP short name to fix mismatch (adjust as needed)
+            "0116" + "1180000284115533" +
+        "52044812" + // Merchant category
+        "5303417" +  // KGS
+        "54" + kgsAmount.length.toString().padStart(2, '0') + kgsAmount + // Tag 54: amount
+        "5802KG" +
+        "5909DEMIRBANK" +
         "6304"; // CRC placeholder
 
-    const crc = calculateCRC(dataWithoutCRC);
-    const fullData = dataWithoutCRC + crc;
+    const crc = calculateCRC(baseQR);
+    const fullQR = baseQR + crc;
 
-    // Generate QR
+    // Generate QR code
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), {
-        text: fullData,
-        width: 220,
-        height: 220
+        text: fullQR,
+        width: 256,
+        height: 256
     });
 
-    alert(`QR Code generated for ${amountKGS} KGS.`);
+    alert(`QR Code generated for ${kgsAmount} KGS.`);
 }
 
-
-// CRC-16/CCITT-FALSE algorithm (XModem)
+// EMV CRC-16/CCITT-FALSE (XModem)
 function calculateCRC(str) {
     let crc = 0xFFFF;
     for (let i = 0; i < str.length; i++) {
@@ -104,4 +87,3 @@ function calculateCRC(str) {
     }
     return crc.toString(16).toUpperCase().padStart(4, "0");
 }
-
