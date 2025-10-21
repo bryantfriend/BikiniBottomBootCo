@@ -1,55 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bikini Bottom Boot Company</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bikini Bottom Boot Company</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Tailwind (optional, only if you want modern button styles) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Webcam Easy Library -->
+  <script src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
 </head>
 <body>
-    <div class="nav-ribbon">
-        <a href="index.html">Home</a>
-        <a href="contact.html">Contact</a>
-        <button class="cart-button" onclick="viewCart()">🛒</button>
-    </div>
-    <header>
-        <h1>Bikini Bottom Boot Company</h1>
-        <p>Your one-stop shop for customized boots!</p>
-    </header>
-    <div class="container">
-        <img src="Shoe.png" alt="Customized Boots" class="boot-image">
-        <div class="store">
-            <h2>Our Collection</h2>
-            <div class="store-item">
-                <h3>Boot Model 1</h3>
-                <p>Description of Boot Model 1. Customize it to your liking!</p>
-                <p>Price: $50.00</p>
-                <a href="#" class="buy-button" onclick="addToCart('Boot Model 1')">Buy Now</a>
-            </div>
-            <div class="store-item">
-                <h3>Boot Model 2</h3>
-                <p>Description of Boot Model 2. Perfect for any adventure!</p>
-                <p>Price: $50.00</p>
-                <a href="#" class="buy-button" onclick="addToCart('Boot Model 2')">Buy Now</a>
-            </div>
-        </div>
-        <!-- Additional Buttons for JavaScript Functions -->
-        <div style="text-align: center; margin: 1rem;">
-            <button onclick="calculateTotal()">Calculate Total</button>
-            <button onclick="clearCart()">Clear Cart</button>
-        </div>
+  <div class="nav-ribbon">
+    <a href="index.html">Home</a>
+    <a href="contact.html">Contact</a>
+    <button class="cart-button" onclick="viewCart()">🛒</button>
+  </div>
 
-        <div style="text-align: center; margin: 1rem;">
-    <button onclick="generateQR()">Generate Payment QR</button>
-    <div id="qrcode" style="margin-top: 1rem;"></div>
-</div>
+  <header>
+    <h1>Bikini Bottom Boot Company</h1>
+    <p>Your one-stop shop for customized boots!</p>
+  </header>
 
-<!-- Load QR Code generator library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <div class="container">
+    <img src="Shoe.png" alt="Customized Boots" class="boot-image">
 
+    <div class="store">
+      <h2>Our Collection</h2>
+
+      <div class="store-item">
+        <h3>Boot Model 1</h3>
+        <p>Description of Boot Model 1. Customize it to your liking!</p>
+        <p>Price: $50.00</p>
+        <a href="#" class="buy-button" onclick="addToCart('Boot Model 1')">Buy Now</a>
+      </div>
+
+      <div class="store-item">
+        <h3>Boot Model 2</h3>
+        <p>Description of Boot Model 2. Perfect for any adventure!</p>
+        <p>Price: $50.00</p>
+        <a href="#" class="buy-button" onclick="addToCart('Boot Model 2')">Buy Now</a>
+      </div>
     </div>
 
-    <!-- Link to external JavaScript file -->
-    <script src="main.js"></script>
+    <!-- Cart Tools -->
+    <div style="text-align: center; margin: 1rem;">
+      <button onclick="calculateTotal()">Calculate Total</button>
+      <button onclick="clearCart()">Clear Cart</button>
+    </div>
+
+    <div style="text-align: center; margin: 1rem;">
+      <button onclick="generateQR()">Generate Payment QR</button>
+      <div id="qrcode" style="margin-top: 1rem;"></div>
+    </div>
+
+    <!-- Virtual Mirror Section -->
+    <section class="mirror-section">
+      <h2>👢 Try Our Virtual Mirror!</h2>
+      <p>Turn on your camera to see how amazing you already look while shopping!</p>
+
+      <div class="mirror-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="canvas" class="hidden"></canvas>
+        <div id="status" class="mirror-status">Camera is off</div>
+      </div>
+
+      <div class="mirror-controls">
+        <button id="start-camera" class="mirror-btn green">Start Camera</button>
+        <button id="stop-camera" class="mirror-btn red" disabled>Stop Camera</button>
+        <button id="flip-camera" class="mirror-btn blue" disabled>Flip</button>
+        <button id="take-photo" class="mirror-btn purple" disabled>Snap</button>
+        <a id="download-photo" href="#" download="mirror.png" class="hidden mirror-btn gray">Download</a>
+      </div>
+      <audio id="snapSound" src="snap.mp3" preload="auto"></audio>
+    </section>
+
+  </div>
+
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Main JS -->
+  <script src="main.js"></script>
+  <!-- Webcam Module -->
+  <script type="module" src="webcam.js"></script>
 </body>
 </html>
